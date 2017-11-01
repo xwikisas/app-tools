@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Priority: Blocker",
+    "color": "#e99695"
+  },
+  {
+    "name": "Priority: Critical",
+    "color": "#f9d0c4"
+  },
+  {
+    "name": "Priority: Major",
+    "color": "#fef2c0"
+  },
+  {
+    "name": "Priority: Minor",
+    "color": "#c5def5"
+  },
+  {
+    "name": "Priority: Trivial",
+    "color": "#c2e0c6"
+  },
+  {
+    "name": "Status: Cannot Reproduce",
+    "color": "#dddddd"
+  },
+  {
+    "name": "Status: Duplicate",
+    "color": "#cccccc"
+  },
+  {
+    "name": "Status: Invalid",
+    "color": "#eeeeee"
+  },
+  {
+    "name": "Status: Won't Fix",
+    "color": "#ffffff"
+  },
+  {
+    "name": "Type: Bug",
+    "color": "#b60205"
+  },
+  {
+    "name": "Type: Improvement",
+    "color": "#1d76db"
+  },
+  {
+    "name": "Type: New Feature",
+    "color": "#0e8a16"
+  },
+  {
+    "name": "Type: Task",
+    "color": "#fbca04"
+  }
+]
