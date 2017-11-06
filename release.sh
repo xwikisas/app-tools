@@ -6,13 +6,12 @@ function release_all() {
   prepare_extensions_to_release
 
   # If the Licensing version is still not provided, ask for it. (this is the case when something failed after the Licensing was released and needs to be skipped)
-  echo $LICENSING_VERSION
 	if [[ -z $LICENSING_VERSION ]]; then
-      echo -e "Which version of the \033[1;32mapplication-licensing\033[0m should be used as dependency in the paid apps?\033[0;32m"
-      read -e -p "> " LICENSING_VERSION
-      echo -n -e "\033[0m"
-      export LICENSING_VERSION=$LICENSING_VERSION
-   fi
+    echo -e "Which version of the \033[1;32mapplication-licensing\033[0m should be used as dependency in the paid apps?\033[0;32m"
+    read -e -p "> " LICENSING_VERSION
+    echo -n -e "\033[0m"
+    export LICENSING_VERSION=$LICENSING_VERSION
+  fi
 
   for i in "${!extensions[@]}"
   do
@@ -27,14 +26,10 @@ function prepare_extensions_to_release() {
   extensions[application-licensing]="${VERSION} ${NEXT_SNAPSHOT_VERSION} ${DO_RELEASE}"
   clear_versions
 
-  echo application-licensing "${VERSION} ${NEXT_SNAPSHOT_VERSION} ${DO_RELEASE}"
-
-
   for d in *; do
     if [[ -d $d ]] && [ $d != application-licensing ]; then
       check_versions $d
       extensions[$d]="${VERSION} ${NEXT_SNAPSHOT_VERSION} ${DO_RELEASE}"
-      echo $d "${VERSION} ${NEXT_SNAPSHOT_VERSION} ${DO_RELEASE}"
       clear_versions
     fi
   done
@@ -65,11 +60,11 @@ function release_project() {
     echo -e "\033[1;32m    Releasing $APP_NAME\033[0m"
     echo              "*****************************"
     cd $APP_NAME
+    pre_cleanup
+    update_sources
     if [ $APP_NAME != application-licensing ]; then
       update_licensing_version
     fi
-    pre_cleanup
-    update_sources
     PROJECT_NAME=`mvn help:evaluate -Dexpression='project.artifactId' -N | grep -v '\[' | grep -v 'Download'`
     TAG_NAME=${PROJECT_NAME}-${APP_VERSION}
     # Set the name of the release branch
@@ -125,10 +120,11 @@ function check_versions() {
 }
 
 function update_licensing_version() {
-	echo $LICENSING_VERSION
+  echo -e "\033[0;32m* Updating <licensing.version> to ${LICENSING_VERSION}\033[0m"
   sed -e "s/<licensing.version>.*<\/licensing.version>/<licensing.version>${LICENSING_VERSION}<\/licensing.version>/" -i pom.xml
   git add pom.xml
   git commit -m "[release] Update licensing.version to ${LICENSING_VERSION}" -q
+  git push origin $RELEASE_FROM_BRANCH
 }
 
 # Clean up the sources, discarding any changes in the local workspace not found in the local git clone and switching back to the master branch.
