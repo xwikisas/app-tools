@@ -80,7 +80,8 @@ function release_project() {
 
 function check_versions() {
   DO_RELEASE="Yes"
-  echo -e "Do you want to release the \033[1;32m${1}\033[0m?"
+  APP_NAME=$1
+  echo -e "Do you want to release the \033[1;32m${APP_NAME}\033[0m?"
   read -e -p "Yes/No (${DO_RELEASE})> " do_release
   if [[ $do_release ]]
   then
@@ -91,10 +92,17 @@ function check_versions() {
     # Check version to release
     if [[ -z $VERSION ]]
     then
-      echo -e "Which version of the \033[1;32m${1}\033[0m are you releasing?\033[0;32m"
-      read -e -p "> " VERSION
+      cd $APP_NAME
+        CURRENT_VERSION=`mvn help:evaluate -Dexpression='project.version' -N | grep -v '\[' | grep -v 'Download' | cut -d- -f1`
+      cd ..
+      echo -e "Which version of the \033[1;32m${APP_NAME}\033[0m are you releasing?\033[0;32m"
+      read -e -p "> (${CURRENT_VERSION})> " current_version
       echo -n -e "\033[0m"
-      export VERSION=$VERSION
+      if [[ $current_version ]]
+      then
+        CURRENT_VERSION=${current_version}
+      fi
+      export VERSION=$CURRENT_VERSION
     fi
     # Set the licensing version to be updated in the paying apps pom (initialized when the licensing app is released)
     if [[ $1 = application-licensing ]]
@@ -108,7 +116,7 @@ function check_versions() {
       VERSION_STUB=`echo $VERSION | cut -c1-3`
       let NEXT_SNAPSHOT_VERSION=`echo ${VERSION_STUB} | cut -d. -f2`+1
       NEXT_SNAPSHOT_VERSION=`echo ${VERSION_STUB} | cut -d. -f1`.${NEXT_SNAPSHOT_VERSION}-SNAPSHOT
-      echo -e "What is the next SNAPSHOT version of the \033[1;32m${1}\033[0m?"
+      echo -e "What is the next SNAPSHOT version of the \033[1;32m${APP_NAME}\033[0m?"
       read -e -p "${NEXT_SNAPSHOT_VERSION}> " tmp
       if [[ $tmp ]]
       then
@@ -154,10 +162,10 @@ function create_release_branch() {
 # Invoke mvn release:prepare, followed by mvn release:perform, then create a git tag.
 function release_maven() {
   echo -e "\033[0;32m* release:prepare\033[0m"
-  mvn release:prepare -DpushChanges=false -DlocalCheckout=true -DreleaseVersion=${APP_VERSION} -DdevelopmentVersion=${APP_SNAPSHOT_VERSION} -Dtag=${TAG_NAME} -DautoVersionSubmodules=true  -Darguments="-DskipTests=true" || exit -2
+  mvn release:prepare -DpushChanges=false -DlocalCheckout=true -DreleaseVersion=${APP_VERSION} -DdevelopmentVersion=${APP_SNAPSHOT_VERSION} -Dtag=${TAG_NAME} -DautoVersionSubmodules=true  -Darguments="-DskipTests -Pintegration-tests" -DskipTests || exit -2
 
   echo -e "\033[0;32m* release:perform\033[0m"
-  mvn release:perform -DpushChanges=false -DlocalCheckout=true -Darguments="-DskipTests=true" || exit -2
+  mvn release:perform -DpushChanges=false -DlocalCheckout=true -Darguments="-DskipTests -Pintegration-tests" -DskipTests || exit -2
 
   echo -e "\033[0;32m* Creating tag\033[0m"
   git checkout ${TAG_NAME} -q
