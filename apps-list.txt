@@ -1,0 +1,16 @@
+application-activedirectory
+application-diagram
+application-filemanager
+application-flashmessages
+application-forum
+application-googleapps
+application-ideas
+application-licensing
+application-meeting
+application-mocca-calendar
+application-office365
+application-onlyoffice-connector
+application-xpoll
+application-workflow-publication
+macro-pdfviewer
+xwiki-pro
