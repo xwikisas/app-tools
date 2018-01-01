@@ -5,7 +5,7 @@ read -e -p "> " location
 if [[ $location ]]; then
   cd $location
   while read p; do
-   git clone git@github.com:xwikisas/${p}.git
+    git clone git@github.com:xwikisas/${p}.git
   done <$appsListFile
 else
   echo "Please specify the location!"
