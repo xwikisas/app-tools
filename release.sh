@@ -162,9 +162,11 @@ function create_release_branch() {
 # Invoke mvn release:prepare, followed by mvn release:perform, then create a git tag.
 function release_maven() {
   echo -e "\033[0;32m* release:prepare\033[0m"
-  mvn release:prepare -DpushChanges=false -DlocalCheckout=true -DreleaseVersion=${APP_VERSION} -DdevelopmentVersion=${APP_SNAPSHOT_VERSION} -Dtag=${TAG_NAME} -DautoVersionSubmodules=true -Pintegration-tests -Darguments="-N -DskipTests" -DskipTests || exit -2
+  mvn release:prepare -DpushChanges=false -DlocalCheckout=true -DreleaseVersion=${APP_VERSION} -DdevelopmentVersion=${APP_SNAPSHOT_VERSION} -Dtag=${TAG_NAME} -DautoVersionSubmodules=true  -Darguments="-DskipTests -Pintegration-tests" -DskipTests || exit -2
+
   echo -e "\033[0;32m* release:perform\033[0m"
-  mvn release:perform -DpushChanges=false -DlocalCheckout=true -Pintegration-tests -Darguments="-DskipTests -Pintegration-tests" -DskipTests || exit -2
+  mvn release:perform -DpushChanges=false -DlocalCheckout=true -Darguments="-DskipTests -Pintegration-tests" -DskipTests || exit -2
+
   echo -e "\033[0;32m* Creating tag\033[0m"
   git checkout ${TAG_NAME} -q
   git tag -s -f -m "Tagging ${TAG_NAME}" ${TAG_NAME}
