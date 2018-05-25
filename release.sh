@@ -95,7 +95,7 @@ function check_versions() {
       cd $APP_NAME
         CURRENT_VERSION=`mvn help:evaluate -Dexpression='project.version' -N | grep -v '\[' | grep -v 'Download' | cut -d- -f1`
         LATEST_TAG=`git describe --abbrev=0 --tags`
-        LATEST_TAG_VERSION=`echo ${LATEST_TAG##*-}`
+        LATEST_TAG_VERSION=${LATEST_TAG##*-}
       cd ..
       echo -e "Which version of the \033[1;32m${APP_NAME}\033[0m are you releasing?\033[0;32m"
       read -e -p "> Last released version: ${LATEST_TAG_VERSION}. Press Enter to release (${CURRENT_VERSION})> " current_version
