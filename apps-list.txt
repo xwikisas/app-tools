@@ -10,7 +10,7 @@ application-meeting
 application-mocca-calendar
 application-office365
 application-onlyoffice-connector
-application-xpoll
+application-xpoll (D)
 application-workflow-publication
-macro-pdfviewer
+macro-pdfviewer (D)
 xwiki-pro
