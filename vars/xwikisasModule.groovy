@@ -26,6 +26,7 @@ def call(body)
         xwikiBuild {
           dockerHubSecretId = 'xwikisasci'
           dockerHubUserId = 'xwikisasci'
+          mavenTool = 'Maven'
           body()
         }
     }
