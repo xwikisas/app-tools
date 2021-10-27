@@ -23,8 +23,10 @@
 def call(body)
 {
     node {
-        dockerHubSecretId = 'xwikisasci'
-        dockerHubUserId = 'xwikisasci'
-        xwikiBuild(body)
+        xwikiBuild {
+          dockerHubSecretId = 'xwikisasci'
+          dockerHubUserId = 'xwikisasci'
+          body()
+        }
     }
 }
