@@ -1,0 +1,13 @@
+Wraps the `xwikiModule` step, adding custom configuration specific to the XWiki SAS Paid Apps.
+
+Main use case: simple maven modules with a single maven build. For more complex use cases, see documentation for the
+[`xwikiBuild`](https://github.com/xwiki/xwiki-jenkins-pipeline) step, in which you'll also find the full list of
+configuration options available.
+
+Example usage:
+
+```
+xwikisasModule {
+    goals = 'clean install'
+}
+```
