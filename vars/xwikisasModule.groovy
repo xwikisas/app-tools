@@ -22,18 +22,17 @@
 
 def call(body)
 {
-    def paidAppConfig = [
-        dockerHubSecretId: 'xwikisasci',
-        dockerHubUserId: 'xwikisasci',
-        mavenTool: 'Maven'
-    ]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = paidAppConfig
-    body()
-
     node {
         xwikiBuild('Paid App Build') {
-          delegate.putAll(paidAppConfig)
+            // Default configuration shared by all paid apps.
+            dockerHubSecretId = 'xwikisasci'
+            dockerHubUserId = 'xwikisasci'
+            mavenTool = 'Maven'
+
+            // Merge the application specific configuration.
+            body.resolveStrategy = Closure.DELEGATE_FIRST
+            body.delegate = delegate
+            body()
         }
     }
 }
