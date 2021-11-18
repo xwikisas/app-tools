@@ -28,6 +28,8 @@ def call(body)
             dockerHubSecretId = 'xwikisasci'
             dockerHubUserId = 'xwikisasci'
             mavenTool = 'Maven'
+            // Running functional tests in Docker containers requires more memory.
+            mavenOpts = '-Xmx2048m -Xms512m'
 
             // Merge the application specific configuration.
             body.resolveStrategy = Closure.DELEGATE_FIRST
