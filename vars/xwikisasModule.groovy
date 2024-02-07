@@ -27,8 +27,10 @@ def call(body)
             // Default configuration shared by all paid apps.
             dockerHubSecretId = 'xwikisasci'
             dockerHubUserId = 'xwikisasci'
+
             // Use the Maven version configured through the Jenkins UI rather than the version installed on the CI agent. Drop this when we move to Docker-based CI agents.
             mavenTool = 'Maven'
+            mavenOpts = '-Xmx3076m -Xms512m -XX:MaxPermSize=768m'
 
             // Merge the application specific configuration.
             body.resolveStrategy = Closure.DELEGATE_FIRST
